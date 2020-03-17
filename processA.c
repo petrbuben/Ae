@@ -4,12 +4,10 @@ void processA(char s[][33], long size){
     char bkpf, cs[] = ".!?";
     char* pf = 0;
 
-    //byla na konci interpunkce?
-
     for(i=0;i<size-1;i+=2){
         for(j=i+2;j<size;j+=2){
 
-          if(pf=strpbrk(s[j],cs)){ //interpunkce
+          if((pf=strpbrk(s[j],cs))){ //interpunkce
                bkpf=*pf;
                s[j][pf-s[j]] = '\0';
                dot=1;
@@ -19,13 +17,6 @@ void processA(char s[][33], long size){
 
             if (dot){//zpet
                 s[j][pf-s[j]] = bkpf;
-
-                /*
-                //kolik punkce je?
-                for(i=pf-s[j]+1;i<strlen(s[j])+1;i++)
-                    if( bkpf != s[j][i] )
-                        s[j][i+1] = '\0';
-*/
                 dot = 0;
             }
 
@@ -40,31 +31,24 @@ void processA(char s[][33], long size){
                     j-=2;
                     continue;
                 }
-                else{//ne vedle sebe
+                else{//rovnaji, ale ne vedle sebe
                     //co je mezi?
                     m=2;
                     for(l=i+m; l<size-i; l+=2, m+=2){
-                        if(pf=strpbrk(s[j+m],cs)){
+
+                        if((pf=strpbrk(s[j+m],cs))){
                             bkpf=*pf;
                             s[j+m][pf-s[j+m]] = '\0';
                             dot = 1;
-                        }
+                        }//if interpunkce
 
                         sc = strcmp(s[l],s[j+m]);
 
                         if (dot){//zpet
                             s[j+m][pf-s[j+m]] = bkpf;
-
-                                /*
-                              //kolik punkce je?
-                                for(i=pf-s[j+m]+1;i<strlen(s[j+m])+1;i++)
-                                    if( bkpf != s[j+m][i])
-                                        s[j+m][i+1] = '\0';
-*/
                             dot = 0;
-                        }
+                        }//if
 
-                       //   if(strcmp(s[l],s[j+m]))
                         if (sc){
                             break; //nerovnaji
                         }
@@ -75,14 +59,13 @@ void processA(char s[][33], long size){
                             }//for//velky presmyk
 
                             strcpy(s[l-m+1],"\0");
-                            //strcpy(s[l-m+6],"");
                             size-=(m*2);
                             j-=2;
                             break;
-                           }//else rovnaji se
-                         }//for
-                      }//else ne vedle sebe
-                }//if equal
-            }//for j
+                        }//else rovnaji se
+                    }//for
+                }//else ne vedle sebe
+            }//if equal
+        }//for j
     }//for i
 }
