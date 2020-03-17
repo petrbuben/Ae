@@ -2,14 +2,7 @@
 
 //testovat možno se všemi subory níže v fopen, jsou přiložené v adresari
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-void readA(char[][33], FILE*, long*);
-void processA(char [][33], long);
-int alloc(char[][33]);
-void printA(char[][33], FILE*);
+#include "main.h"
 
 int main()
 {
@@ -19,10 +12,8 @@ int main()
 
     //f = fopen("oko.txt", "r");
     //f = fopen("oko1.txt", "r");
-    //f = fopen("ska.txt", "r");
-    f = fopen("nepr2.txt", "r");
     //f = fopen("ska2.txt", "r");
-
+    f = fopen("nepr.txt", "r");
 
     if(!f){
             printf("%s","Cannot open file");
