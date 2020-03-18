@@ -6,66 +6,77 @@ void processA(char s[][33], long size){
 
     for(i=0;i<size-1;i+=2){
         for(j=i+2;j<size;j+=2){
+            if((pf=strpbrk(s[j],cs))){//interpunkce
+              bkpf=*pf;
+              s[j][pf-s[j]] = '\0';
+              dot=1;
+          }
 
-          if((pf=strpbrk(s[j],cs))){ //interpunkce
-               bkpf=*pf;
-               s[j][pf-s[j]] = '\0';
-               dot=1;
-            }
+          int sc = !strcmp(s[i],s[j]);
 
-            int sc = !strcmp(s[i],s[j]);
-
-            if (dot){//zpet
+          if (dot){//zpet
                 s[j][pf-s[j]] = bkpf;
                 dot = 0;
-            }
+          }
 
-            if(sc){
-                if(i+2==j){ //rovnaji - a za sebou ?
-                    //presmyk
-                    for(k=i; k<size-1; k+=2){
-                         strcpy(s[k],s[k+2]);
-                    }
-                    strcpy(s[k],"");
-                    size-=2;
-                    j-=2;
-                    continue;
-                }
-                else{//rovnaji, ale ne vedle sebe
-                    //co je mezi?
-                    m=2;
-                    for(l=i+m; l<size-i; l+=2, m+=2){
+          if(sc){
+              if(i+2==j){ //rovnaji - a za sebou ?
+                  //presmyk
+                  for(k=i; k<size-2; k+=2){
+                      strcpy(s[k],s[k+2]);
+                  }
+                  strcpy(s[k],"");
+                  size-=2;
+                  j-=2;
+                  continue;
+              }
+              else{//rovnaji, ale ne vedle sebe
+                   //jsou fráze vedle sebe?
+                   //m=2;
+                   ////for(l=i+m; l<size-i; l+=2, m+=2){
+                   m=j;
+                   for(l=i+2; l<j; l+=2,m+=2){
+                       if((pf=strpbrk(s[l+2],cs))){
+                           bkpf=*pf;
+                           s[l+2][pf-s[l+2]] = '\0';
+                           dot = 1;
+                       }//if interpunkce
 
-                        if((pf=strpbrk(s[j+m],cs))){
-                            bkpf=*pf;
-                            s[j+m][pf-s[j+m]] = '\0';
-                            dot = 1;
-                        }//if interpunkce
+                       ////sc = strcmp(s[l],s[j+m]);
+                       sc = strcmp(s[l],s[m+2]);
 
-                        sc = strcmp(s[l],s[j+m]);
-
-                        if (dot){//zpet
-                            s[j+m][pf-s[j+m]] = bkpf;
-                            dot = 0;
-                        }//if
+                       if (dot){//zpet
+                           sc=0; // punkce - nerovnaji
+                           s[l+2][pf-s[l+2]] = bkpf;
+                           dot = 0;
+                       }//if
 
                         if (sc){
                             break; //nerovnaji
-                        }
-                        else{
-                            //velky presmyk
-                            for(l=j; l<size-m-1; l+=2){
-                                strcpy(s[l],s[l+m+2]);
-                            }//for//velky presmyk
-
-                            strcpy(s[l-m+1],"\0");
-                            size-=(m*2);
-                            j-=2;
-                            break;
-                        }//else rovnaji se
+                        } // if
                     }//for
+
+                    if (sc){
+                        break; //nerovnaji - next i
+                    }
+                    else{
+                        //velky presmyk
+                        for(l=j; l+j<=size; l+=2){
+                            if (s[l+j-i-1][0]=='\n'){
+                                 s[l][0]='\0';
+                                 break;
+                            }
+                            strcpy(s[l],s[l+j-i]);
+                        }//for//velky presmyk
+
+                        strcpy(s[l-1],"\0");
+                        size-=j;
+                        j-=2;
+                     //break;
+                    }//else presmyk
+
                 }//else ne vedle sebe
             }//if equal
         }//for j
     }//for i
-}
+}//f
