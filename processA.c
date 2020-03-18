@@ -62,7 +62,8 @@ void processA(char s[][33], long size){
                     else{
                         //velky presmyk
                         for(l=j; l+j<=size; l+=2){
-                            if (s[l+j-i-1][0]=='\n'){
+                            if (s[l+j-i-1][0]=='\n' &&
+                                s[l+j-i][0] == '\0'){
                                  s[l][0]='\0';
                                  break;
                             }
