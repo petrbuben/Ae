@@ -7,13 +7,14 @@
 int main()
 {
     FILE *f=NULL, *fres=NULL;
+    char (*s)[33]=NULL;
     char ch='\0';
     long wrds =0L;
 
     //f = fopen("oko.txt", "r");
-    //f = fopen("oko1.txt", "r");
-    //f = fopen("ska2.txt", "r");
-    f = fopen("nepr.txt", "r");
+    //f = fopen("pom.txt", "r");
+    f = fopen("ska2.txt", "r");
+    //f = fopen("nepr1.txt", "r");
 
     if(!f){
             printf("%s","Cannot open file");
@@ -26,8 +27,6 @@ int main()
             return -1;
     }
 
-    char (*s)[33]=NULL;
-
     ///kolik mezer - slov souboru
     for (ch = fgetc(f); ch != EOF; ch = fgetc(f))
         if (ch == ' ' || ch=='\n')
@@ -39,7 +38,7 @@ int main()
     //rewind
     (void)fseek(f, 0L, SEEK_SET);
 
-    s = calloc(wrds, sizeof(*s));
+    s = calloc(wrds, sizeof(*s)+1);
 
 
     //read file
@@ -70,6 +69,7 @@ int main()
 
     fclose(f);
     fclose(fres);
+    free (s);
 
     //system("pause");
     return 0;
